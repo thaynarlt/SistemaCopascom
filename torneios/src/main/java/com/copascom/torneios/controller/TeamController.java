@@ -25,6 +25,7 @@ public class TeamController {
     public Team createTeam(@RequestBody Team team) {
         return teamRepository.save(team);
     }
+    
 
     @GetMapping
     public List<Team> getAllTeams() {

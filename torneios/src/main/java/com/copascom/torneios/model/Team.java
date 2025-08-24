@@ -7,12 +7,19 @@ import java.util.List;
 @Data
 @Entity
 public class Team {
+
+    @ManyToOne
+@JoinColumn(name = "sport_id")
+private Sport sport;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
+    private TeamCategory category; // MASCULINO, FEMININO, MISTO
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 }

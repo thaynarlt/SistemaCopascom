@@ -1,31 +1,41 @@
 // src/types.ts
 
-// 1. Crie um objeto constante com os valores
+// --- ENUMS E TIPOS ---
+
 export const MatchStatus = {
-    SCHEDULED: 'SCHEDULED',
-    IN_PROGRESS: 'IN_PROGRESS',
-    COMPLETED: 'COMPLETED',
-    CANCELED: 'CANCELED',
-} as const; // "as const" é a mágica aqui!
+  AGENDADO: "AGENDADO",
+  EM_ANDAMENTO: "EM-ANDAMENTO",
+  FINALIZADO: "FINALIZADO",
+  CANCELADO: "CANCELADO",
+} as const;
 
-// 2. Crie um tipo a partir das chaves do objeto
-export type MatchStatus = typeof MatchStatus[keyof typeof MatchStatus];
+export type MatchStatus = (typeof MatchStatus)[keyof typeof MatchStatus];
 
-// ... resto do seu arquivo types.ts (Team, Match, etc.)
-// A interface Match não precisa mudar em nada, ela vai usar o tipo criado acima.
-export interface Match {
-    id: number;
-    teamA: Team | null;
-    teamB: Team | null;
-    scoreTeamA: number | null;
-    scoreTeamB: number | null;
-    winner: Team | null;
-    status: MatchStatus; // Isso vai funcionar perfeitamente
-    round: number;
-    matchDateTime: string | null;
-}
+export type TeamCategory = "MASCULINO" | "FEMININO";
+
+// --- INTERFACES PRINCIPAIS ---
 
 export interface Team {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
+  category: TeamCategory;
+  players: Player[]; // Atualizado para usar a interface Player
+}
+export interface Match {
+  id: number;
+  teamA: Team | null;
+  teamB: Team | null;
+  scoreTeamA: number | null;
+  scoreTeamB: number | null;
+  winner: Team | null;
+  status: MatchStatus;
+  round: number;
+  sport: { id: number; name: string } | null;
+  nextMatch: Match | null;
+}
+
+export interface Player {
+  id: number;
+  name: string;
+  shirtNumber: number;
 }

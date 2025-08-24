@@ -1,5 +1,7 @@
 package com.copascom.torneios.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,8 +14,10 @@ public class Player {
     private Long id;
     private String name;
     private String nickname;
+    private Integer shirtNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
+    @JsonIgnore
     private Team team;
 }

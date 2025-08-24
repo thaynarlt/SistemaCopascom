@@ -1,0 +1,65 @@
+/* src/components/Navbar.css */
+.navbar {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+}
+
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto; /* ajusta largura ao conteúdo */
+}
+
+.navbar-logo {
+  align-items: center;
+}
+
+.navbar-logo img {
+  width: auto;
+  height: 230px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+}
+
+.nav-item {
+  width: auto; /* largura só do botão */
+}
+
+.nav-links {
+  color: var(--text-over-primary); /* cinza escuro */
+  background: var(--gray-100);
+  text-decoration: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  font-weight: 500;
+  min-width: 200px; /* define uma largura mínima */
+  text-align: center;
+}
+
+.nav-links:hover {
+  color: var(--primary);
+  box-shadow: 0 2px 7px var(--primary);
+  background: var(--gray-100);
+}
+
+.nav-links.active {
+  color: var(--primary);
+  box-shadow: 0 2px 7px var(--primary);
+}

@@ -1,5 +1,9 @@
 package com.copascom.torneios.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +16,8 @@ public class Sport {
     private Long id;
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "sport_id")
-    private Sport sport;
+    // Relação inversa: Um esporte pode ter muitos times
+    @OneToMany(mappedBy = "sport", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Team> teams;
 }
