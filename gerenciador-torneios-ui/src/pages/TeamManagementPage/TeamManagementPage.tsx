@@ -1,7 +1,7 @@
 // src/pages/TeamManagementPage.tsx
 
 import React, { useState } from "react";
-import "./TeamManagementPage.css";
+import "./style.css";
 import type { Team, Player } from "../../types";
 import { useTeams } from "../../hooks/useTeams";
 
@@ -11,6 +11,7 @@ import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
 import { TeamFormModal } from "../../components/modals/TeamFormModal";
 import { CompetingTeamsPanel } from "../../components/CompetingTeamsPanel";
+import { PlayerDetails } from "../../components/PlayerDetails";
 
 const TeamManagementPage: React.FC = () => {
   // O hook gerencia a lógica de dados
@@ -89,25 +90,14 @@ const TeamManagementPage: React.FC = () => {
             onDeleteTeam={(team) => setModal({ type: "delete", data: team })}
           />
           {/* O ideal seria criar um componente PlayerDetails para o painel direito */}
-          <div className="right-panel">
-            {selectedTeam ? (
-              <div>
-                <h3>Jogadores de "{selectedTeam.name}"</h3>
-                <button onClick={() => setModal({ type: "player" })}>
-                  Adicionar Jogador
-                </button>
-                {/* Lista de jogadores aqui */}
-              </div>
-            ) : (
-              <h3>Selecione um time para ver os jogadores.</h3>
-            )}
-          </div>
+          <PlayerDetails
+            team={selectedTeam}
+            onAddPlayer={() => setModal({ type: "player" })}
+          />
         </main>
 
-        {/* O ideal seria criar um componente CompetingTeamsPanel */}
         <section className="bottom-panel">
-              <CompetingTeamsPanel teams={teams} />
-          {/* Filtros e lista de times em competição aqui */}
+          <CompetingTeamsPanel teams={teams} />
         </section>
       </div>
 

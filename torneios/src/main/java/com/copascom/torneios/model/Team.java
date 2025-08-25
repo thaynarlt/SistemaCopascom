@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "teams")
 @Getter
@@ -38,5 +40,6 @@ public class Team {
     private Set<Sport> sports;
 
     // Adicionado com base na sua lógica do frontend
+    @JsonProperty("isCompeting")
     private boolean isCompeting;
 }

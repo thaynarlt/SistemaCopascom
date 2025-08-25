@@ -1,5 +1,5 @@
 // src/components/PlayerDetails.tsx
-
+import "./style.css";
 import React from "react";
 import type { Team } from "../../types";
 
@@ -35,9 +35,9 @@ export const PlayerDetails: React.FC<PlayerDetailsProps> = ({
           ) : (
             <ul>
               {team.players.map((player) => (
-                <li key={player.id}>
-                  <span className="player-number">{player.shirtNumber}</span>
+                <li className="list" key={player.id}>
                   <span className="player-name">{player.name}</span>
+                  <span className="player-number">{player.shirtNumber}</span>
                 </li>
               ))}
             </ul>

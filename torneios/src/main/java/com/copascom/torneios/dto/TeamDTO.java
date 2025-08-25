@@ -2,6 +2,9 @@
 package com.copascom.torneios.dto;
 
 import com.copascom.torneios.model.TeamCategory;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +14,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Data
 public class TeamDTO {
     private String name;
     private TeamCategory category;
+    @JsonProperty("isCompeting")
     private boolean isCompeting;
     private Set<String> sports; // <-- A mágica está aqui!
     // Adicione este campo para receber os jogadores
