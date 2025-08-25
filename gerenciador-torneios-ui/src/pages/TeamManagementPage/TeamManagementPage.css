@@ -1,98 +1,377 @@
-/* src/pages/TeamManagementPage.css */
-.management-container {
-  max-width: 1000px;
+/* --- Seu Tema de Cores --- */
+:root {
+  --gray-100: #e6e9f0;
+  --gray-200: #cdd3e1;
+  --gray-300: #aab3cc;
+  --gray-400: #555f7d;
+  --gray-500: #454f6a;
+  --gray-600: #363d56;
+  --gray-700: #272f43;
+  --gray-800: #181f2e;
+  --gray-900: #0a0f1a;
+  --primary-light: #8d93fd;
+  --primary: #646cff;
+  --primary-dark: #242760;
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #991b1b;
+  --info: #0ea5e9;
+  --text-over-primary-dark: #e6e9f0;
+  --text-over-error: #e6e9f0;
+  --text-over-info: #0a0f1a;
+  --text-default: #e6e9f0;
+  --text-muted: #aab3cc;
+}
+
+/* --- Hierarquia de Tipografia --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+h1 {
+  font-size: 1.75rem;
+  color: var(--primary-light);
+}
+h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--gray-700);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+p {
+  margin: 0;
+}
+
+/* --- Layout Principal --- */
+.dashboard-container {
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-.management-content {
+.dashboard-header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 .left-panel,
 .right-panel {
-  flex: 1;
+  background-color: var(--gray-800);
+  padding: 1.5rem;
+  border-radius: 8px;
 }
-.add-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.list-container h2,
-.add-form h3 {
-  margin-top: 0;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
-}
+
+/* --- Lista de Times --- */
 .list-container ul {
   list-style: none;
   padding: 0;
-  max-height: 400px;
-  overflow-y: auto;
+  margin: 0;
 }
 .list-container li {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem;
+  padding: 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
+  border-bottom: 1px solid var(--gray-700);
 }
-.list-container li:hover,
+.list-container li:last-child {
+  border-bottom: none;
+}
+.list-container li:hover {
+  background-color: var(--gray-700);
+}
 .list-container li.selected {
-  background-color: #e9ecef;
+  background-color: var(--primary-dark);
+}
+.item-info {
+  flex-grow: 1;
 }
 .team-name {
   font-weight: 500;
+  font-size: 1.1rem;
+}
+.sport-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.sport-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background-color: var(--gray-600);
+  color: var(--gray-100);
+  text-transform: uppercase;
+  font-weight: 500;
 }
 .team-category {
-  font-size: 0.8rem;
-  padding: 4px 8px;
-  border-radius: 10px;
-  color: white;
+  position: absolute;
+  right: 1rem;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
   text-transform: uppercase;
+  font-weight: 600;
 }
 .team-category.MASCULINO {
-  background-color: #007bff;
+  background-color: var(--info);
+  color: var(--text-over-info);
 }
 .team-category.FEMININO {
   background-color: #e83e8c;
+  color: white;
 }
+.team-category.MISTO {
+  background-color: var(--primary-light);
+  color: var(--gray-900);
+}
+
+/* --- Ações de Editar/Excluir --- */
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  right: 130px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.list-container li:hover .item-actions {
+  opacity: 1;
+}
+.action-button {
+  background: var(--gray-600);
+  color: var(--gray-200);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+}
+.action-button:hover {
+  background: var(--gray-500);
+  color: white;
+}
+.action-button-danger:hover {
+  background-color: var(--error);
+  color: var(--text-over-error);
+}
+
+/* --- Painel da Direita (Placeholder) --- */
 .right-panel .placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #aaa;
-  font-size: 1.2rem;
-  text-align: center;
-  background-color: #f9f9f9;
-  border-radius: 5px;
+  color: var(--text-muted);
 }
-.players-list ul {
-  list-style: none;
-  padding: 0;
-}
-.players-list li {
+.player-panel-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  padding: 0.5rem;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-700);
+  padding-bottom: 0.5rem;
 }
-.player-number {
-  font-weight: bold;
-  background-color: #343a40;
-  color: white;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: inline-flex;
+
+/* --- Estilos do Modal (Centralizado) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 15, 26, 0.8);
+  display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--gray-700);
+}
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+.modal-body {
+  padding: 1.5rem;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--gray-700);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* --- Elementos de Formulário --- */
+input,
+select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--gray-600);
+  border-radius: 5px;
+  background-color: var(--gray-700);
+  color: var(--text-default);
+  font-size: 1rem;
+}
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--gray-600);
+  border-radius: 5px;
+}
+.checkbox-group > label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.checkbox-item input[type="checkbox"] {
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: var(--primary);
+}
+.checkbox-item label {
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* --- Botões --- */
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-over-primary-dark);
+  background-color: var(--primary);
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: var(--primary-light);
+}
+.button-secondary {
+  background-color: var(--gray-600);
+}
+.button-secondary:hover {
+  background-color: var(--gray-500);
+}
+.button-danger {
+  background-color: var(--error);
+  color: var(--text-over-error);
+}
+.button-danger:hover {
+  opacity: 0.85;
+}
+
+/* --- Mensagens de Erro --- */
+.error-message {
+  padding: 0.75rem;
+  border-radius: 5px;
+  color: var(--text-over-error);
+  background-color: var(--error);
+  border: 1px solid #c53030;
+}
+.main-error {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Checkbox único para "Está competindo?" */
+.single-checkbox {
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--gray-700);
+  margin-top: 0.5rem;
+}
+
+/* --- Painel Inferior (Times em Competição) --- */
+.bottom-panel {
+  background-color: var(--gray-800);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem; /* Espaçamento entre os painéis de cima */
+}
+
+.bottom-panel .filter-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.bottom-panel .filter-bar select {
+  background-color: var(--gray-700);
+  flex-grow: 1;
+}
+
+.competing-teams-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.competing-team-item {
+  background-color: var(--gray-900);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--gray-700);
+  flex-grow: 1;
+  min-width: 200px; /* Garante que os itens não fiquem muito espremidos */
+}
+
+.no-competing-teams {
+  width: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 1rem;
 }

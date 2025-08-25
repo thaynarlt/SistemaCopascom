@@ -1,12 +1,9 @@
 /* src/components/Navbar.css */
 .navbar {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 1.2rem;
-  position: sticky;
   top: 0;
+  padding: 1rem 2rem;
+  z-index: 999;
+  width: 100%;
 }
 
 .navbar-container {
@@ -14,20 +11,28 @@
   flex-direction: column;
   align-items: center;
   width: auto; /* ajusta largura ao conteúdo */
+  margin: 10px;
 }
 
 .navbar-logo {
   align-items: center;
+  padding: 20px;
 }
 
 .navbar-logo img {
   width: auto;
-  height: 230px;
+  height: 150px;
+  -webkit-user-drag: none; /* bloqueia arrastar no Chrome, Safari, Edge */
+  -khtml-user-drag: none; /* compatibilidade antiga */
+  -moz-user-select: none; /* Firefox */
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; /* padrão */
 }
 
 .nav-menu {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   list-style: none;
   padding: 0;
@@ -62,4 +67,27 @@
 .nav-links.active {
   color: var(--primary);
   box-shadow: 0 2px 7px var(--primary);
+}
+
+/* --- Media Query para Telas Pequenas (Celulares e Tablets na Vertical) --- */
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 1rem; /* Diminui o espaçamento lateral em telas menores */
+  }
+
+  .navbar-logo {
+    margin-bottom: 1.5rem; /* Aumenta um pouco o espaço para o menu empilhado */
+  }
+
+  .nav-menu {
+    flex-direction: column; /* A MÁGICA ACONTECE AQUI: empilha os botões */
+    gap: 0.75rem; /* Ajusta o espaçamento vertical entre os botões */
+    width: 100%; /* Garante que o menu ocupe a largura total */
+  }
+
+  .nav-links {
+    width: 100%; /* Faz cada botão ocupar a largura total para facilitar o toque */
+    padding: 0.8rem 1rem; /* Ajusta o padding para o modo vertical */
+  }
 }

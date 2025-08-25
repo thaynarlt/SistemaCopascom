@@ -1,23 +1,16 @@
 package com.copascom.torneios.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.*;
-import lombok.Data;
-
-@Data
 @Entity
+@Table(name = "sports")
+@Getter
+@Setter
 public class Sport {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-
-    // Relação inversa: Um esporte pode ter muitos times
-    @OneToMany(mappedBy = "sport", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Team> teams;
+    private String name; // Ex: "FUTSAL", "VOLEI", etc.
 }

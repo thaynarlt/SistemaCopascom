@@ -23,8 +23,7 @@ function App() {
             element={<TournamentPage />}
           />
           <Route path="/admin/teams" element={<TeamManagementPage />} />
-          <Route path="/admin/sports" element={<SportManagementPage />} />{" "}
-          {/* Nova Rota */}
+          <Route path="/admin/sports" element={<SportManagementPage />} />
         </Routes>
       </main>
     </Router>

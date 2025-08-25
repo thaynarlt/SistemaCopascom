@@ -1,192 +1,138 @@
 // src/pages/TeamManagementPage.tsx
-import React, { useState, useEffect } from "react";
 
+import React, { useState } from "react";
 import "./TeamManagementPage.css";
-import type { Team, TeamCategory } from "../../types";
-import api, { addPlayerToTeam } from "../../services/api";
+import type { Team, Player } from "../../types";
+import { useTeams } from "../../hooks/useTeams";
+
+// Importando os novos componentes
+import { TeamList } from "../../components/TeamList";
+import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
+import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
+import { TeamFormModal } from "../../components/modals/TeamFormModal";
+import { CompetingTeamsPanel } from "../../components/CompetingTeamsPanel";
 
 const TeamManagementPage: React.FC = () => {
-  const [teams, setTeams] = useState<Team[]>([]);
+  // O hook gerencia a lógica de dados
+  const { teams, loading, error, addTeam, updateTeam, deleteTeam, savePlayer } =
+    useTeams();
+
+  // Estado local para controle da UI
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-  const [newTeamName, setNewTeamName] = useState<string>("");
-  const [newTeamCategory, setNewTeamCategory] =
-    useState<TeamCategory>("MASCULINO");
 
-  // Estado para o formulário de jogador
-  const [newPlayerName, setNewPlayerName] = useState("");
-  const [newPlayerNumber, setNewPlayerNumber] = useState("");
+  // Estado unificado para os modais
+  const [modal, setModal] = useState<{
+    type: "team" | "player" | "delete";
+    data?: any;
+  }>({ type: null });
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchTeams = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await api.get<Team[]>("/teams");
-      setTeams(response.data);
-    } catch (err) {
-      setError("Falha ao carregar os times.");
-    } finally {
-      setLoading(false);
+  // Lógica de manipulação de times (agora bem mais simples)
+  const handleSaveTeam = async (
+    teamData: Omit<Team, "id" | "players">,
+    id?: number
+  ) => {
+    if (id) {
+      await updateTeam(id, teamData);
+    } else {
+      await addTeam(teamData);
     }
   };
 
-  useEffect(() => {
-    fetchTeams();
-  }, []);
-
-  const handleAddTeam = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTeamName.trim() === "") return;
-    try {
-      const response = await api.post<Team>("/teams", {
-        name: newTeamName,
-        category: newTeamCategory,
-      });
-      setTeams([...teams, response.data]);
-      setNewTeamName("");
-    } catch (err) {
-      setError("Falha ao adicionar o time.");
-    }
-  };
-
-  const handleAddPlayer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (
-      !selectedTeam ||
-      newPlayerName.trim() === "" ||
-      newPlayerNumber.trim() === ""
-    )
-      return;
-    try {
-      const shirtNumber = parseInt(newPlayerNumber, 10);
-      if (isNaN(shirtNumber)) {
-        alert("Número da camisa inválido.");
-        return;
+  const handleDeleteTeam = async () => {
+    if (modal.type === "delete" && modal.data) {
+      await deleteTeam(modal.data.id);
+      if (selectedTeam?.id === modal.data.id) {
+        setSelectedTeam(null);
       }
-      const newPlayer = await addPlayerToTeam(selectedTeam.id, {
-        name: newPlayerName,
-        shirtNumber,
-      });
-
-      // Atualiza a lista de times com o novo jogador
-      const updatedTeams = teams.map((team) =>
-        team.id === selectedTeam.id
-          ? { ...team, players: [...team.players, newPlayer] }
-          : team
-      );
-      setTeams(updatedTeams);
-      setSelectedTeam((prev) =>
-        prev ? { ...prev, players: [...prev.players, newPlayer] } : null
-      );
-
-      setNewPlayerName("");
-      setNewPlayerNumber("");
-    } catch (err) {
-      setError("Falha ao adicionar jogador.");
+      setModal({ type: null }); // Fecha o modal
     }
   };
 
-  if (loading) return <p>Carregando times...</p>;
+  // Lógica de manipulação de jogadores
+  const handleSavePlayer = async (
+    playerData: Omit<Player, "id">,
+    id?: number
+  ) => {
+    if (selectedTeam) {
+      await savePlayer(selectedTeam.id, playerData, id);
+    }
+  };
+
+  // Atualiza o time selecionado quando a lista de times muda
+  React.useEffect(() => {
+    if (selectedTeam) {
+      const updatedSelectedTeam = teams.find((t) => t.id === selectedTeam.id);
+      setSelectedTeam(updatedSelectedTeam || null);
+    }
+  }, [teams, selectedTeam]);
+
+  if (loading) return <p>Carregando...</p>;
 
   return (
-    <div className="management-container">
-      <h1>Gerenciamento de Times e Jogadores</h1>
-      {error && <p className="error-message">{error}</p>}
+    <>
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <h1>Dashboard de Gerenciamento</h1>
+          <button onClick={() => setModal({ type: "team" })}>
+            Cadastrar Novo Time
+          </button>
+        </header>
 
-      <div className="management-content">
-        <div className="left-panel">
-          <form className="add-form" onSubmit={handleAddTeam}>
-            <h3>Cadastrar Novo Time</h3>
-            <input
-              type="text"
-              value={newTeamName}
-              onChange={(e) => setNewTeamName(e.target.value)}
-              placeholder="Nome do time"
-              required
-            />
-            <select
-              value={newTeamCategory}
-              onChange={(e) =>
-                setNewTeamCategory(e.target.value as TeamCategory)
-              }
-            >
-              <option value="MASCULINO">Masculino</option>
-              <option value="FEMININO">Feminino</option>
-            </select>
-            <button type="submit">Adicionar Time</button>
-          </form>
+        {error && <p className="error-message main-error">{error}</p>}
 
-          <div className="list-container">
-            <h2>Times Cadastrados</h2>
-            {teams.length === 0 ? (
-              <p>Nenhum time cadastrado.</p>
+        <main className="dashboard-content">
+          <TeamList
+            teams={teams}
+            selectedTeam={selectedTeam}
+            onSelectTeam={setSelectedTeam}
+            onEditTeam={(team) => setModal({ type: "team", data: team })}
+            onDeleteTeam={(team) => setModal({ type: "delete", data: team })}
+          />
+          {/* O ideal seria criar um componente PlayerDetails para o painel direito */}
+          <div className="right-panel">
+            {selectedTeam ? (
+              <div>
+                <h3>Jogadores de "{selectedTeam.name}"</h3>
+                <button onClick={() => setModal({ type: "player" })}>
+                  Adicionar Jogador
+                </button>
+                {/* Lista de jogadores aqui */}
+              </div>
             ) : (
-              <ul>
-                {teams.map((team) => (
-                  <li
-                    key={team.id}
-                    onClick={() => setSelectedTeam(team)}
-                    className={selectedTeam?.id === team.id ? "selected" : ""}
-                  >
-                    <span className="team-name">{team.name}</span>
-                    <span className={`team-category ${team.category}`}>
-                      {team.category}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <h3>Selecione um time para ver os jogadores.</h3>
             )}
           </div>
-        </div>
+        </main>
 
-        <div className="right-panel">
-          {selectedTeam ? (
-            <div>
-              <h3>Jogadores de "{selectedTeam.name}"</h3>
-              <form className="add-form" onSubmit={handleAddPlayer}>
-                <input
-                  type="text"
-                  value={newPlayerName}
-                  onChange={(e) => setNewPlayerName(e.target.value)}
-                  placeholder="Nome do Jogador"
-                  required
-                />
-                <input
-                  type="number"
-                  value={newPlayerNumber}
-                  onChange={(e) => setNewPlayerNumber(e.target.value)}
-                  placeholder="Nº Camisa"
-                  required
-                />
-                <button type="submit">Adicionar Jogador</button>
-              </form>
-              <div className="players-list">
-                {selectedTeam.players.length === 0 ? (
-                  <p>Nenhum jogador cadastrado.</p>
-                ) : (
-                  <ul>
-                    {selectedTeam.players.map((player) => (
-                      <li key={player.id}>
-                        <span className="player-number">
-                          {player.shirtNumber}
-                        </span>
-                        <span className="player-name">{player.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="placeholder">
-              Selecione um time para ver os jogadores.
-            </div>
-          )}
-        </div>
+        {/* O ideal seria criar um componente CompetingTeamsPanel */}
+        <section className="bottom-panel">
+              <CompetingTeamsPanel teams={teams} />
+          {/* Filtros e lista de times em competição aqui */}
+        </section>
       </div>
-    </div>
+
+      <TeamFormModal
+        isOpen={modal.type === "team"}
+        onClose={() => setModal({ type: null })}
+        onSave={handleSaveTeam}
+        initialData={modal.type === "team" ? modal.data : null}
+      />
+
+      <PlayerFormModal
+        isOpen={modal.type === "player"}
+        onClose={() => setModal({ type: null })}
+        onSave={handleSavePlayer}
+        initialData={modal.type === "player" ? modal.data : null}
+      />
+
+      <ConfirmationModal
+        isOpen={modal.type === "delete"}
+        onClose={() => setModal({ type: null })}
+        onConfirm={handleDeleteTeam}
+        title="Confirmar Exclusão"
+        message={`Tem certeza que deseja excluir o time "${modal.data?.name}"?`}
+      />
+    </>
   );
 };
 
