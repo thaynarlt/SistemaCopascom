@@ -1,0 +1,46 @@
+/* src/components/CompetingTeamsPanel.module.css */
+
+.bottomPanel {
+  background-color: var(--gray-800);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.sportSection {
+  margin-bottom: 2rem;
+}
+
+.sportSection:last-child {
+  margin-bottom: 0;
+}
+
+.sportSection h3 {
+  text-transform: uppercase;
+  color: var(--primary-light);
+  border-bottom: 1px solid var(--gray-700);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.teamsList {
+  list-style: none;
+  padding-left: 0.5rem;
+}
+
+.teamsList li {
+  padding: 0.5rem 0;
+  color: var(--text-default);
+  border-bottom: 1px solid var(--gray-900);
+}
+
+.teamsList li:last-child {
+  border-bottom: none;
+}
+
+.noCompetingTeams {
+  width: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 1rem;
+}

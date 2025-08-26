@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import "./style.css";
+import "../../styles/global.css";
+
 import type { Team, Player } from "../../types";
 import { useTeams } from "../../hooks/useTeams";
 
@@ -10,8 +12,13 @@ import { TeamList } from "../../components/TeamList";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
 import { TeamFormModal } from "../../components/modals/TeamFormModal";
-import { CompetingTeamsPanel } from "../../components/CompetingTeamsPanel";
 import { PlayerDetails } from "../../components/PlayerDetails";
+
+type ModalState =
+  | { type: "team"; data?: Team }
+  | { type: "player"; data?: Player }
+  | { type: "delete"; data: Team }
+  | { type: null };
 
 const TeamManagementPage: React.FC = () => {
   // O hook gerencia a lógica de dados
@@ -22,10 +29,7 @@ const TeamManagementPage: React.FC = () => {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
 
   // Estado unificado para os modais
-  const [modal, setModal] = useState<{
-    type: "team" | "player" | "delete";
-    data?: any;
-  }>({ type: null });
+  const [modal, setModal] = useState<ModalState>({ type: null });
 
   // Lógica de manipulação de times (agora bem mais simples)
   const handleSaveTeam = async (
@@ -69,6 +73,7 @@ const TeamManagementPage: React.FC = () => {
 
   if (loading) return <p>Carregando...</p>;
 
+  const teamToDelete = modal.type === "delete" ? modal.data : null;
   return (
     <>
       <div className="dashboard-container">
@@ -96,9 +101,11 @@ const TeamManagementPage: React.FC = () => {
           />
         </main>
 
+        {/*}
         <section className="bottom-panel">
           <CompetingTeamsPanel teams={teams} />
         </section>
+        */}
       </div>
 
       <TeamFormModal
@@ -120,7 +127,12 @@ const TeamManagementPage: React.FC = () => {
         onClose={() => setModal({ type: null })}
         onConfirm={handleDeleteTeam}
         title="Confirmar Exclusão"
-        message={`Tem certeza que deseja excluir o time "${modal.data?.name}"?`}
+        // Use a nova variável aqui. É 100% seguro.
+        message={
+          teamToDelete
+            ? `Tem certeza que deseja excluir o time "${teamToDelete.name}"?`
+            : ""
+        }
       />
     </>
   );

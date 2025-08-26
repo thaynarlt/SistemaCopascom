@@ -1,4 +1,5 @@
 // src/components/TeamList.tsx
+import "./style.css";
 
 import React from "react";
 import type { Team } from "../../types";

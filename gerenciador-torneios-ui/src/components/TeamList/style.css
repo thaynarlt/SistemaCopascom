@@ -1,0 +1,105 @@
+/* src/components/TeamList.module.css */
+
+.leftPanel {
+  background-color: var(--gray-800);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+.listContainer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.listContainer li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--gray-700);
+}
+.listContainer li:last-child {
+  border-bottom: none;
+}
+.listContainer li:hover {
+  background-color: var(--gray-700);
+}
+.listContainer li.selected {
+  background-color: var(--primary-dark);
+}
+.itemInfo {
+  flex-grow: 1;
+}
+.teamName {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.sportBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.sportBadge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background-color: var(--gray-600);
+  color: var(--gray-100);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.teamCategory {
+  position: absolute;
+  right: 1rem;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.teamCategory.MASCULINO {
+  background-color: var(--info);
+  color: var(--text-over-info);
+}
+.teamCategory.FEMININO {
+  background-color: #e83e8c;
+  color: white;
+}
+.teamCategory.MISTO {
+  background-color: var(--primary-light);
+  color: var(--gray-900);
+}
+.itemActions {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  right: 130px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.listContainer li:hover .itemActions {
+  opacity: 1;
+}
+.actionButton {
+  background: var(--gray-600);
+  color: var(--gray-200);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+}
+.actionButton:hover {
+  background: var(--gray-500);
+  color: white;
+}
+.actionButtonDanger:hover {
+  background-color: var(--error);
+  color: var(--text-over-error);
+}

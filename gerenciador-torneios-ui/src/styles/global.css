@@ -16,3 +16,74 @@ body {
   color: var(--text-default);
 }
 
+/* src/index.css */
+
+/* --- Hierarquia de Tipografia --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+h1 {
+  font-size: 1.75rem;
+  color: var(--primary-light);
+}
+h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--gray-700);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* --- Botões --- */
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-over-primary-dark);
+  background-color: var(--primary);
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: var(--primary-light);
+}
+.button-secondary {
+  background-color: var(--gray-600);
+}
+.button-secondary:hover {
+  background-color: var(--gray-500);
+}
+.button-danger {
+  background-color: var(--error);
+  color: var(--text-over-error);
+}
+.button-danger:hover {
+  opacity: 0.85;
+}
+
+/* --- Mensagens de Erro --- */
+.error-message {
+  padding: 0.75rem;
+  border-radius: 5px;
+  color: var(--text-over-error);
+  background-color: var(--error);
+  border: 1px solid #c53030;
+}
+.main-error {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
