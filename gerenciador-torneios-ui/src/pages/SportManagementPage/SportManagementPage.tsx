@@ -5,8 +5,9 @@ import "./style.css"; // Estilo simples
 const SportManagementPage: React.FC = () => {
   return (
     <main className="dashboard-container">
-      <section className="bottom-panel">
-        <CompetingTeamsPanel teams={[]}/>
+      <h1 className="titulo1">Times em cada Esporte</h1>
+      <section> 
+        <CompetingTeamsPanel teams={[]} />
       </section>
     </main>
   );

@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
         <ul className="nav-menu">
           <li className="nav-item">
             <NavLink
-              to="/"
+              to="/HomePage"
               className={({ isActive }) =>
                 isActive ? "nav-links active" : "nav-links"
               }
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
           </li>
           <li className="nav-item">
             <NavLink
-              to="/admin/teams"
+              to="/TeamManagementPage"
               className={({ isActive }) =>
                 isActive ? "nav-links active" : "nav-links"
               }
@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
           </li>
           <li className="nav-item">
             <NavLink
-              to="/admin/sports"
+              to="/SportManagementPage"
               className={({ isActive }) =>
                 isActive ? "nav-links active" : "nav-links"
               }

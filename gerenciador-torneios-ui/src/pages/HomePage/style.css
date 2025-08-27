@@ -1,0 +1,37 @@
+/* Estilos globais e para o container principal */
+.home-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh; /* Garante que o container ocupe a altura total da tela */
+}
+.welcome-panel {
+  background-color: var(--gray-800);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 900px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.welcome-panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.welcome-panel p {
+  line-height: 1.6;
+}
+
+/* Animação de entrada para o painel */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

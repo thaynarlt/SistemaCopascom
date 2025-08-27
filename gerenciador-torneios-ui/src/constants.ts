@@ -11,6 +11,7 @@ export const AVAILABLE_SPORTS: Sport[] = [
   "BALEADO",
 ];
 
+
 export const TEAM_CATEGORIES: TeamCategory[] = [
   "MASCULINO",
   "FEMININO",

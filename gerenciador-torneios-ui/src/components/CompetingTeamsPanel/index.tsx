@@ -3,6 +3,7 @@
 import React, { useMemo } from "react";
 import { AVAILABLE_SPORTS } from "../../constants";
 import type { Team } from "../../types";
+import "./style.css";
 
 interface CompetingTeamsPanelProps {
   teams: Team[];
@@ -12,7 +13,7 @@ export const CompetingTeamsPanel: React.FC<CompetingTeamsPanelProps> = ({
   teams,
 }) => {
   // Agrupa os times por esporte
-  const teamsBySport = useMemo(() => {  
+  const teamsBySport = useMemo(() => {
     const grouped: Record<string, Team[]> = {};
 
     AVAILABLE_SPORTS.forEach((sportName) => {

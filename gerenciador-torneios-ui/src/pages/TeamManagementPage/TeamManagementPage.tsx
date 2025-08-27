@@ -100,12 +100,6 @@ const TeamManagementPage: React.FC = () => {
             onAddPlayer={() => setModal({ type: "player" })}
           />
         </main>
-
-        {/*}
-        <section className="bottom-panel">
-          <CompetingTeamsPanel teams={teams} />
-        </section>
-        */}
       </div>
 
       <TeamFormModal

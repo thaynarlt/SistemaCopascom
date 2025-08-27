@@ -1,8 +1,9 @@
 /* --- Layout Principal --- */
 .dashboard-container {
+  margin: 0 auto; /* centraliza horizontalmente */
   max-width: 1200px;
-  margin: 2rem auto;
   padding: 2rem;
+  
 }
 .dashboard-header {
   display: flex;
@@ -280,47 +281,6 @@ button:hover {
   padding: 0.5rem 0;
   border-top: 1px solid var(--gray-700);
   margin-top: 0.5rem;
-}
-
-/* --- Painel Inferior (Times em Competição) --- */
-.bottom-panel {
-  background-color: var(--gray-800);
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-top: 2rem; /* Espaçamento entre os painéis de cima */
-}
-
-.bottom-panel .filter-bar {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.bottom-panel .filter-bar select {
-  background-color: var(--gray-700);
-  flex-grow: 1;
-}
-
-.competing-teams-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.competing-team-item {
-  background-color: var(--gray-900);
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--gray-700);
-  flex-grow: 1;
-  min-width: 200px; /* Garante que os itens não fiquem muito espremidos */
-}
-
-.no-competing-teams {
-  width: 100%;
-  text-align: center;
-  color: var(--text-muted);
-  padding: 1rem;
 }
 
 
