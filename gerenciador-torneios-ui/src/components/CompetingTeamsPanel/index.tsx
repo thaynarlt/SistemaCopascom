@@ -1,27 +1,28 @@
-// src/components/CompetingTeamsPanel.tsx
-
 import React, { useMemo } from "react";
 import type { Team } from "../../types";
 import "./style.css";
 
+// As props agora são um título e uma lista de times pré-filtrada
 interface CompetingTeamsPanelProps {
+  title: string;
   teams: Team[];
 }
 
 export const CompetingTeamsPanel: React.FC<CompetingTeamsPanelProps> = ({
+  title,
   teams,
 }) => {
-  // Agrupa os times por esporte
+  // A lógica de agrupamento foi simplificada. Agora ela apenas agrupa por esporte.
   const teamsBySport = useMemo(() => {
     const grouped: Record<string, Team[]> = {};
     const sportNames = new Set<string>();
-// Primeiro, encontre todos os esportes únicos que os times estão competindo
+
     teams.forEach(team => {
       if (team.isCompeting && team.sports) {
         team.sports.forEach(sport => sportNames.add(sport.name));
       }
     });
-    // Agora, agrupe os times para cada esporte encontrado
+
     sportNames.forEach(sportName => {
       grouped[sportName] = teams.filter(team =>
         team.isCompeting && team.sports?.some(s => s.name === sportName)
@@ -30,10 +31,15 @@ export const CompetingTeamsPanel: React.FC<CompetingTeamsPanelProps> = ({
     return { grouped, sportNames: Array.from(sportNames) };
   }, [teams]);
 
+  // Se não houver times na lista fornecida, não renderiza nada.
+  if (teams.length === 0) {
+    return null;
+  }
 
   return (
+    // O título agora é dinâmico, vindo das props
     <section className="bottom-panel">
-      <h2>Times em Competição</h2>
+      <h2>{title}</h2> 
       <div className="competing-teams-list">
         {teamsBySport.sportNames.map((sportName) => (
           <div key={sportName} className="sport-section">

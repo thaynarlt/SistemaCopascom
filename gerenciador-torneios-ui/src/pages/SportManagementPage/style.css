@@ -1,6 +1,5 @@
 /* --- Container Principal da Página --- */
 .dashboard-container {
-  background-color: var(--gray-900);
   color: var(--text-default);
   min-height: 100vh;
   padding: 2rem;
@@ -21,7 +20,7 @@
 .bottom-panel {
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin-bottom: 2rem;
 }
 
 .bottom-panel h2 {

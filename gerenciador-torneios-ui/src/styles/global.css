@@ -12,10 +12,23 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 1.6rem; /* 16px */
-  background: var(--gray-900);
+  background: linear-gradient(45deg, #6402cc, #0a0f1a, #1e8ccd);
   color: var(--text-default);
+  background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
 }
 
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 /* src/index.css */
 
 /* --- Hierarquia de Tipografia --- */
