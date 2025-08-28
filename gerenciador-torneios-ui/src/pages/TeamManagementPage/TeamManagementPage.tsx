@@ -1,10 +1,10 @@
 // src/pages/TeamManagementPage.tsx
 
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import "./style.css";
 import "../../styles/global.css";
 
-import type { Team, Player } from "../../types";
+import type { Team, Player, Sport } from "../../types";
 import { useTeams } from "../../hooks/useTeams";
 
 // Importando os novos componentes
@@ -13,6 +13,7 @@ import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
 import { TeamFormModal } from "../../components/modals/TeamFormModal";
 import { PlayerDetails } from "../../components/PlayerDetails";
+import api from "../../services/api";
 
 type ModalState =
   | { type: "team"; data?: Team }
@@ -21,6 +22,10 @@ type ModalState =
   | { type: null };
 
 const TeamManagementPage: React.FC = () => {
+
+    
+
+
   // O hook gerencia a lógica de dados
   const { teams, loading, error, addTeam, updateTeam, deleteTeam, savePlayer } =
     useTeams();
@@ -31,9 +36,24 @@ const TeamManagementPage: React.FC = () => {
   // Estado unificado para os modais
   const [modal, setModal] = useState<ModalState>({ type: null });
 
+const [availableSports, setAvailableSports] = useState<Sport[]>([]);
+    useEffect(() => {
+    // Função para buscar os esportes da API
+    const fetchSports = async () => {
+      try {
+        // Assume que você tem uma instância do axios em 'api.ts'
+        const response = await api.get<Sport[]>("/sports");
+        setAvailableSports(response.data);
+      } catch (err) {
+        console.error("Falha ao carregar esportes:", err);
+      }
+    };
+    fetchSports();
+  }, []); // Array vazio executa apenas uma vez
   // Lógica de manipulação de times (agora bem mais simples)
   const handleSaveTeam = async (
-    teamData: Omit<Team, "id" | "players">,
+    // Este tipo agora bate com o que o TeamFormModal envia
+    teamData: Omit<Team, "id" | "players" | "sports"> & { sports: string[] },
     id?: number
   ) => {
     if (id) {
@@ -107,6 +127,7 @@ const TeamManagementPage: React.FC = () => {
         onClose={() => setModal({ type: null })}
         onSave={handleSaveTeam}
         initialData={modal.type === "team" ? modal.data : null}
+        availableSports={availableSports} // Passe a lista dinâmica para o modal
       />
 
       <PlayerFormModal

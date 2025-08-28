@@ -1,7 +1,6 @@
 // src/components/CompetingTeamsPanel.tsx
 
 import React, { useMemo } from "react";
-import { AVAILABLE_SPORTS } from "../../constants";
 import type { Team } from "../../types";
 import "./style.css";
 
@@ -15,30 +14,33 @@ export const CompetingTeamsPanel: React.FC<CompetingTeamsPanelProps> = ({
   // Agrupa os times por esporte
   const teamsBySport = useMemo(() => {
     const grouped: Record<string, Team[]> = {};
-
-    AVAILABLE_SPORTS.forEach((sportName) => {
-      grouped[sportName] = teams.filter(
-        (team) =>
-          team.isCompeting &&
-          team.sports?.some(
-            (sport) => sport.name.toUpperCase() === sportName.toUpperCase()
-          )
+    const sportNames = new Set<string>();
+// Primeiro, encontre todos os esportes únicos que os times estão competindo
+    teams.forEach(team => {
+      if (team.isCompeting && team.sports) {
+        team.sports.forEach(sport => sportNames.add(sport.name));
+      }
+    });
+    // Agora, agrupe os times para cada esporte encontrado
+    sportNames.forEach(sportName => {
+      grouped[sportName] = teams.filter(team =>
+        team.isCompeting && team.sports?.some(s => s.name === sportName)
       );
     });
-
-    return grouped;
+    return { grouped, sportNames: Array.from(sportNames) };
   }, [teams]);
+
 
   return (
     <section className="bottom-panel">
       <h2>Times em Competição</h2>
       <div className="competing-teams-list">
-        {AVAILABLE_SPORTS.map((sportName) => (
+        {teamsBySport.sportNames.map((sportName) => (
           <div key={sportName} className="sport-section">
             <h3>{sportName}</h3>
-            {teamsBySport[sportName].length > 0 ? (
+            {teamsBySport.grouped[sportName].length > 0 ? (
               <ul>
-                {teamsBySport[sportName].map((team) => (
+                {teamsBySport.grouped[sportName].map((team) => (
                   <li key={team.id} className="competing-team-item">
                     <span className="team-name">{team.name}</span>
                   </li>

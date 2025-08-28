@@ -26,16 +26,16 @@ export function useTeams() {
     fetchTeams();
   }, [fetchTeams]);
 
-  const addTeam = async (teamData: Omit<Team, "id" | "players">) => {
+  const addTeam = async (teamData: Omit<Team, "id" | "players" | "sports"> & { sports: string[] }) => {
     const response = await api.post<Team>("/teams", teamData);
-    setTeams((prevTeams) => [...prevTeams, { ...response.data, players: [] }]);
+    // A API retorna o time completo, com o objeto Sport. O estado local ficará correto.
+    setTeams((prevTeams) => [...prevTeams, response.data]);
   };
 
-  const updateTeam = async (id: number, teamData: Omit<Team, "id" | "players">) => {
-    // Supondo que a API retorne o time atualizado
+  const updateTeam = async (id: number, teamData: Omit<Team, "id" | "players" | "sports"> & { sports: string[] }) => {
     const response = await api.put<Team>(`/teams/${id}`, teamData);
     setTeams((prevTeams) =>
-      prevTeams.map((team) => (team.id === id ? { ...team, ...response.data } : team))
+      prevTeams.map((team) => (team.id === id ? response.data : team))
     );
   };
   

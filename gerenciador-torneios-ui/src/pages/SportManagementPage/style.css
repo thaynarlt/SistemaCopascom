@@ -1,0 +1,119 @@
+/* --- Container Principal da Página --- */
+.dashboard-container {
+  background-color: var(--gray-900);
+  color: var(--text-default);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Título Principal da Página --- */
+.titulo1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--gray-100);
+  margin-bottom: 3rem;
+  text-shadow: 0 0 15px var(--primary-dark);
+}
+
+/* --- Estilos para o Painel de Competição --- */
+.bottom-panel {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.bottom-panel h2 {
+  font-size: 1.8rem;
+  color: var(--text-default);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--gray-700);
+  text-align: center;
+}
+
+/* --- Layout em Grid para a Lista de Esportes --- */
+.competing-teams-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Estilo do Card de cada Esporte --- */
+.sport-section {
+  background-color: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.sport-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Título do Esporte dentro do Card --- */
+.sport-section h3 {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-700);
+}
+
+/* --- Lista de Times --- */
+.sport-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Item de Time na Lista --- */
+.competing-team-item {
+  background-color: var(--gray-700);
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.2s ease;
+}
+
+.competing-team-item:last-child {
+  margin-bottom: 0;
+}
+
+.competing-team-item:hover {
+  background-color: var(--gray-600);
+}
+
+.team-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* --- Mensagem de "Nenhum time inscrito" --- */
+.no-teams {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* --- Mensagens de Loading e Erro --- */
+.loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+.error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 1.5rem;
+    margin: 0 auto;
+    max-width: 800px;
+    border-radius: 8px;
+    background-color: var(--error);
+    color: var(--gray-100); /* Usando uma cor de texto com bom contraste sobre o fundo de erro */
+}
