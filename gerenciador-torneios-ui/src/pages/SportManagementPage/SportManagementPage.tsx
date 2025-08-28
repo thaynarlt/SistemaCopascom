@@ -2,6 +2,7 @@ import React, { useMemo } from "react"; // Importa o useMemo
 import { CompetingTeamsPanel } from "../../components/CompetingTeamsPanel";
 import { useTeams } from "../../hooks/useTeams";
 import "./style.css";
+import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
 
 const SportManagementPage: React.FC = () => {
   const { teams, loading, error } = useTeams();
@@ -25,7 +26,7 @@ const SportManagementPage: React.FC = () => {
 
 
   if (loading) {
-    return <p className="loading-message">Carregando times...</p>;
+    return <LoadingSpinner />;
   }
 
   if (error) {

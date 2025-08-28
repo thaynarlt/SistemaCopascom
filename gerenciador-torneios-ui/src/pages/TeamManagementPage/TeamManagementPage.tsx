@@ -14,6 +14,7 @@ import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
 import { TeamFormModal } from "../../components/modals/TeamFormModal";
 import { PlayerDetails } from "../../components/PlayerDetails";
 import api from "../../services/api";
+import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
 
 type ModalState =
   | { type: "team"; data?: Team }
@@ -91,7 +92,7 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
     }
   }, [teams, selectedTeam]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <LoadingSpinner />;
 
   const teamToDelete = modal.type === "delete" ? modal.data : null;
   return (

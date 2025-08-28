@@ -3,6 +3,7 @@ import './style.css';
 import type { Match, TeamCategory } from '../../types';
 import { useTeams } from '../../hooks/useTeams';
 import { generateRoundRobinMatches } from '../../utils/tournamentUtils';
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner';
 
 // --- COMPONENTES MOCKADOS POR ENQUANTO (Vamos criá-los depois) ---
 const Bracket: React.FC<{ matches: Match[] }> = ({ matches }) => (
@@ -44,7 +45,7 @@ const TournamentPage: React.FC = () => {
     }));
   }, [filteredTeams, selectedSport]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="tournament-container">
