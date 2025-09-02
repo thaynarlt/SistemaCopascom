@@ -13,8 +13,6 @@ export type MatchStatus = (typeof MatchStatus)[keyof typeof MatchStatus];
 
 export type TeamCategory = "MASCULINO" | "FEMININO" | "MISTO";
 
-// CORRIGIDO: 'Sport' agora é uma interface/objeto, não mais uma string.
-// Isso corresponde ao que a API retorna.
 export interface Sport {
   name: string;
 }
@@ -25,6 +23,7 @@ export interface Player {
   id: number;
   name: string;
   shirtNumber: number;
+  sports: Sport[]; // <--- ALTERAÇÃO AQUI
 }
 
 export interface Team {
@@ -32,7 +31,7 @@ export interface Team {
   name: string;
   category: TeamCategory;
   players: Player[];
-  sports: Sport[]; // Agora espera um array de objetos Sport
+  sports: Sport[];
   isCompeting: boolean;
 }
 
@@ -45,6 +44,6 @@ export interface Match {
   winner: Team | null;
   status: MatchStatus;
   round: number;
-  sport: Sport | null; // Simplificado para usar a nova interface Sport
+  sport: Sport | null;
   nextMatch: Match | null;
 }

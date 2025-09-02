@@ -1,13 +1,13 @@
+/* eslint-disable no-irregular-whitespace */
 // src/pages/TeamManagementPage.tsx
 
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import "../../styles/global.css";
 
 import type { Team, Player, Sport } from "../../types";
 import { useTeams } from "../../hooks/useTeams";
 
-// Importando os novos componentes
 import { TeamList } from "../../components/TeamList";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { PlayerFormModal } from "../../components/modals/PlayerFormModal";
@@ -23,26 +23,16 @@ type ModalState =
   | { type: null };
 
 const TeamManagementPage: React.FC = () => {
-
-    
-
-
-  // O hook gerencia a lógica de dados
   const { teams, loading, error, addTeam, updateTeam, deleteTeam, savePlayer } =
     useTeams();
 
-  // Estado local para controle da UI
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-
-  // Estado unificado para os modais
   const [modal, setModal] = useState<ModalState>({ type: null });
+  const [availableSports, setAvailableSports] = useState<Sport[]>([]);
 
-const [availableSports, setAvailableSports] = useState<Sport[]>([]);
-    useEffect(() => {
-    // Função para buscar os esportes da API
+  useEffect(() => {
     const fetchSports = async () => {
       try {
-        // Assume que você tem uma instância do axios em 'api.ts'
         const response = await api.get<Sport[]>("/sports");
         setAvailableSports(response.data);
       } catch (err) {
@@ -50,10 +40,9 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
       }
     };
     fetchSports();
-  }, []); // Array vazio executa apenas uma vez
-  // Lógica de manipulação de times (agora bem mais simples)
+  }, []);
+
   const handleSaveTeam = async (
-    // Este tipo agora bate com o que o TeamFormModal envia
     teamData: Omit<Team, "id" | "players" | "sports"> & { sports: string[] },
     id?: number
   ) => {
@@ -70,13 +59,12 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
       if (selectedTeam?.id === modal.data.id) {
         setSelectedTeam(null);
       }
-      setModal({ type: null }); // Fecha o modal
+      setModal({ type: null });
     }
   };
 
-  // Lógica de manipulação de jogadores
   const handleSavePlayer = async (
-    playerData: Omit<Player, "id">,
+    playerData: Omit<Player, "id" | "sports"> & { sports: string[] }, // <--- ALTERAÇÃO AQUI
     id?: number
   ) => {
     if (selectedTeam) {
@@ -84,7 +72,6 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
     }
   };
 
-  // Atualiza o time selecionado quando a lista de times muda
   React.useEffect(() => {
     if (selectedTeam) {
       const updatedSelectedTeam = teams.find((t) => t.id === selectedTeam.id);
@@ -97,17 +84,20 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
   const teamToDelete = modal.type === "delete" ? modal.data : null;
   return (
     <>
+           {" "}
       <div className="dashboard-container">
+               {" "}
         <header className="dashboard-header">
-          <h1>Dashboard de Gerenciamento</h1>
+                    <h1>Dashboard de Gerenciamento</h1>         {" "}
           <button onClick={() => setModal({ type: "team" })}>
-            Cadastrar Novo Time
+                        Cadastrar Novo Time          {" "}
           </button>
+                 {" "}
         </header>
-
-        {error && <p className="error-message main-error">{error}</p>}
-
+                {error && <p className="error-message main-error">{error}</p>} 
+             {" "}
         <main className="dashboard-content">
+                   {" "}
           <TeamList
             teams={teams}
             selectedTeam={selectedTeam}
@@ -115,41 +105,44 @@ const [availableSports, setAvailableSports] = useState<Sport[]>([]);
             onEditTeam={(team) => setModal({ type: "team", data: team })}
             onDeleteTeam={(team) => setModal({ type: "delete", data: team })}
           />
-          {/* O ideal seria criar um componente PlayerDetails para o painel direito */}
+                   {" "}
           <PlayerDetails
             team={selectedTeam}
             onAddPlayer={() => setModal({ type: "player" })}
           />
+                 {" "}
         </main>
+             {" "}
       </div>
-
+           {" "}
       <TeamFormModal
         isOpen={modal.type === "team"}
         onClose={() => setModal({ type: null })}
         onSave={handleSaveTeam}
         initialData={modal.type === "team" ? modal.data : null}
-        availableSports={availableSports} // Passe a lista dinâmica para o modal
+        availableSports={availableSports}
       />
-
+           {" "}
       <PlayerFormModal
         isOpen={modal.type === "player"}
         onClose={() => setModal({ type: null })}
         onSave={handleSavePlayer}
         initialData={modal.type === "player" ? modal.data : null}
+        teamSports={selectedTeam?.sports || []} // <--- ALTERAÇÃO AQUI
       />
-
+           {" "}
       <ConfirmationModal
         isOpen={modal.type === "delete"}
         onClose={() => setModal({ type: null })}
         onConfirm={handleDeleteTeam}
         title="Confirmar Exclusão"
-        // Use a nova variável aqui. É 100% seguro.
         message={
           teamToDelete
             ? `Tem certeza que deseja excluir o time "${teamToDelete.name}"?`
             : ""
         }
       />
+         {" "}
     </>
   );
 };
