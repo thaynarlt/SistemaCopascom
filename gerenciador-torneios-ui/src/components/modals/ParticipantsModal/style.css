@@ -1,0 +1,132 @@
+/* --- Reutilização da Base do Modal --- */
+
+/* O overlay que escurece o fundo */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Usa uma cor escura semi-transparente para o fundo */
+  background-color: rgba(10, 15, 26, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Animação suave de entrada */
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* O container principal do conteúdo do modal */
+.modal-content-participants {
+  /* Fundo principal escuro, igual aos painéis */
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: 8px; /* Mesmo raio de borda dos painéis */
+  width: 90%;
+  max-width: 600px; /* Um pouco mais largo para acomodar listas */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  /* Animação suave de surgimento */
+  animation: slideIn 0.2s ease-out;
+}
+
+/* Cabeçalho do modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--gray-700); /* Mesma borda dos painéis */
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-default);
+  text-transform: capitalize;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: var(--text-default);
+}
+
+/* --- Estilos Específicos para a Lista de Participantes --- */
+
+/* Corpo do modal, agora com scroll */
+.modal-body {
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  overflow-y: auto; /* Adiciona barra de rolagem se a lista for longa */
+  max-height: 65vh; /* Limita a altura máxima do corpo */
+}
+
+/* Seção para cada time */
+.team-participants-section {
+  margin-top: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.team-participants-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Nome do time (título da seção) */
+.team-participants-section h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  /* Cor de destaque, pode ser a sua cor primária */
+  color: var(--primary-light);
+  margin: 0 0 0.75rem 0;
+}
+
+/* Lista de jogadores */
+.team-participants-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Item da lista (cada jogador) */
+.team-participants-section li {
+  padding: 0.5rem 0.25rem;
+  color: var(--text-default);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.team-participants-section li:hover {
+  background-color: var(--gray-700);
+}
+
+/* Animações (opcional, mas adiciona um toque refinado) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

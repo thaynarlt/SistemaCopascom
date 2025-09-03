@@ -32,8 +32,17 @@
   padding: 1rem;
   border-radius: 6px;
   border: 1px solid var(--gray-700);
-  flex-grow: 1;
-  min-width: 200px; /* Garante que os itens não fiquem muito espremidos */
+
+  /* 👇 NOVAS PROPRIEDADES PARA O LAYOUT VERTICAL 👇 */
+  display: flex;
+  flex-direction: row; /* <-- Altera para linha */
+  align-items: center; /* <-- Alinha verticalmente ao centro */
+  gap: 1rem; /* Aumenta um pouco o espaço entre eles */
+  justify-content: space-between;
+}
+
+.sport-section-header {
+  margin-bottom: 1rem;
 }
 
 .no-competing-teams {
@@ -41,4 +50,38 @@
   text-align: center;
   color: var(--text-muted);
   padding: 1rem;
+}
+
+/* Adicione este novo estilo ao final do seu arquivo CSS */
+
+/* --- Estilo Específico para o Botão "Ver Participantes" --- */
+
+.button-view-participants {
+  /* Cores e Fundo */
+  background-color: #7b68ee; /* Roxo "Medium Slate Blue", da sua imagem de referência */
+  color: #ffffff; /* Texto branco para ótimo contraste */
+  border: none;
+
+  /* Tamanho e Espaçamento */
+  padding: 6px 14px; /* Espaçamento interno para um botão pequeno e elegante */
+  font-size: 0.8rem; /* Tamanho da fonte reduzido */
+  font-weight: 500;
+  line-height: 1.5; /* Melhora o alinhamento vertical do texto */
+
+  /* Forma e Comportamento */
+  border-radius: 5px; /* Cantos arredondados, consistentes com seu design */
+  cursor: pointer;
+  white-space: nowrap; /* Impede que o texto quebre em duas linhas */
+  transition: background-color 0.2s ease, transform 0.1s ease; /* Transições suaves */
+}
+
+.button-view-participants:hover {
+  background-color: #9370db; /* Tom de roxo mais claro para o efeito hover */
+  transform: translateY(-1px); /* Leve elevação no hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-view-participants:active {
+  transform: translateY(0); /* Efeito de clique */
+  box-shadow: none;
 }
