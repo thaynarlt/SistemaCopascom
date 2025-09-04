@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import type { Team, Player } from "../../../types";
-import { PlayerDetails } from "../../PlayerDetails"; // 1. Importar PlayerDetails
 import "./style.css";
 
 interface ParticipantsModalProps {
@@ -10,31 +9,44 @@ interface ParticipantsModalProps {
   sportName: string;
 }
 
+// 4. Helper movido para fora do componente para não ser recriado a cada renderização.
+const getPlayersForSport = (players: Player[], sportName: string): Player[] => {
+  return players.filter((player) =>
+    player.sports.some((sport) => sport.name === sportName)
+  );
+};
+
 export const ParticipantsModal: React.FC<ParticipantsModalProps> = ({
   isOpen,
   onClose,
   teams,
   sportName,
 }) => {
-  // 2. Estado para guardar o time selecionado dentro do modal
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
 
-  // Efeito para resetar o time selecionado quando o modal for fechado/reaberto
   useEffect(() => {
     if (!isOpen) {
       setSelectedTeam(null);
     }
   }, [isOpen]);
 
+  // 1. FILTRAGEM EFICIENTE: Calcula a lista de times participantes apenas quando 'teams' ou 'sportName' mudar.
+  const teamsInSport = useMemo(() => {
+    return (
+      teams
+        .map((team) => ({
+          ...team,
+          // Adicionamos uma propriedade temporária com os jogadores já filtrados
+          participatingPlayers: getPlayersForSport(team.players, sportName),
+        }))
+        // Mantemos na lista apenas os times que têm jogadores no esporte
+        .filter((team) => team.participatingPlayers.length > 0)
+    );
+  }, [teams, sportName]);
+
   if (!isOpen) {
     return null;
   }
-
-  const getPlayersForSport = (players: Player[]): Player[] => {
-    return players.filter((player) =>
-      player.sports.some((sport) => sport.name === sportName)
-    );
-  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -49,38 +61,54 @@ export const ParticipantsModal: React.FC<ParticipantsModalProps> = ({
           </button>
         </div>
 
-        {/* 3. Corpo do modal agora tem duas colunas */}
         <div className="modal-body two-columns">
           {/* Coluna da Esquerda: Lista de Times */}
           <div className="participants-list-panel">
-            {teams.length === 0 ? (
-              <p>Nenhum time inscrito nesta modalidade.</p>
+            {/* 2. VERIFICAÇÃO CORRETA: Checa a lista já filtrada */}
+            {teamsInSport.length === 0 ? (
+              <p>Nenhum time com jogadores inscritos nesta modalidade.</p>
             ) : (
-              teams.map((team) => {
-                const participatingPlayers = getPlayersForSport(team.players);
-                if (participatingPlayers.length === 0) {
-                  return null;
-                }
-                return (
-                  // Seção de cada time agora é clicável
-                  <div
-                    key={team.id}
-                    className={`team-participants-section ${
-                      selectedTeam?.id === team.id ? "selected" : ""
-                    }`}
-                    onClick={() => setSelectedTeam(team)} // 4. Atualiza o time selecionado
-                  >
-                    <h4>{team.name}</h4>
-                    <p>{participatingPlayers.length} jogadores inscritos</p>
-                  </div>
-                );
-              })
+              teamsInSport.map((team) => (
+                <div
+                  key={team.id}
+                  className={`team-participants-section ${
+                    selectedTeam?.id === team.id ? "selected" : ""
+                  }`}
+                  onClick={() => setSelectedTeam(team)}
+                >
+                  <h4>{team.name}</h4>
+                  <button className="inscritas">
+                    {team.participatingPlayers.length} jogadores inscritos
+                  </button>
+                </div>
+              ))
             )}
           </div>
 
           {/* Coluna da Direita: Detalhes do Time Selecionado */}
           <div className="participants-details-panel">
-            <PlayerDetails team={selectedTeam} />
+            {/* 3. EXIBIÇÃO DOS DETALHES DO TIME SELECIONADO */}
+            {!selectedTeam ? (
+              <div className="placeholder">
+                <p>Selecione um time para ver os jogadores.</p>
+              </div>
+            ) : (
+              <div>
+                <h4>Jogadores de "{selectedTeam.name}"</h4>
+                <ul className="player-list-details">
+                  {getPlayersForSport(selectedTeam.players, sportName).map(
+                    (player) => (
+                      <li key={player.id}>
+                        <span className="player-name">{player.name}</span>
+                        <span className="player-number">
+                          {player.shirtNumber}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
